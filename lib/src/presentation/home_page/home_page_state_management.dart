@@ -64,20 +64,26 @@ class HomePageStateManagement extends GetxController with GetSingleTickerProvide
   }
 
   void deleteCategory(){
-    int newCategoryKey = categoryKey!;
-    if(categories.length == categoryIndex){
+    int? newCategoryKey;
+    if(categories.length == 1){
+      newCategoryKey = null;
+      categoryIndex--;
+    }else if(categories.length == categoryIndex){
       newCategoryKey = categories[categoryIndex-2].key;
       categoryIndex--;
     }else{
       newCategoryKey = categories[categoryIndex].key;
     }
     AppHiveBoxes.categories.delete(categoryKey);
+    deleteFromCategory(
+      AppHiveBoxes.contacts.values.where((element) => element.categoryKeys.contains(categoryKey)).toList()
+    );
     categories = AppHiveBoxes.categories.values.toList();
     categoryKey = newCategoryKey;
     update(['tabs','list', 'FAB', 'addContactB', 'deleteB']);
   }
 
-  void removeFromCategory(List<ContactModel> contacts){
+  void deleteFromCategory(List<ContactModel> contacts){
     contacts.forEach(
       (element) {
         List<int> newCategories = element.categoryKeys;

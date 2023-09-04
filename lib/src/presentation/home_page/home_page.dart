@@ -162,7 +162,7 @@ class HomePage extends StatelessWidget {
                 }else{
                   return ContactsList(
                     contacts: controller.getContacts(),
-                    onSelected: controller.removeFromCategory
+                    onSelected: controller.deleteFromCategory
                   );
                 }
               }
